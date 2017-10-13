@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -91,6 +92,24 @@ public class MainActivity extends AppCompatActivity {
         loadData(); //Carga datos de Firestore
  }
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(item.getTitle().equals("DELETE"))
+            deletItem(item.getOrder());
+        return super.onContextItemSelected(item);
+    }
+
+    private void deletItem(int index) {
+        db.collection("ToDoList")
+                .document(toDoList.get(index).getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        loadData();
+                    }
+                });
+    }
 
     private void updateData(String title, String description) {
         db.collection("ToDoList").document(idUpdate)

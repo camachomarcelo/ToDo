@@ -67,10 +67,28 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemViewHolder>{
     @Override
     public void onBindViewHolder(ListItemViewHolder holder, int position) {
 
+
+        //Set data for item
+        holder.item_title.setText(toDoList.get(position).getTitle());
+        holder.item_description.setText(toDoList.get(position).getDescription());
+
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, int position, boolean isLongClick) {
+                //When user select item, data will auto set for Edit Text View
+                mainActivity.title.setText(toDoList.get(position).getTitle());
+                mainActivity.description.setText(toDoList.get(position).getDescription());
+
+                mainActivity.isUpdate = true; // Set flag is update = true
+                mainActivity.idUpdate = toDoList.get(position).getId();
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
+
         return toDoList.size();
     }
 }
